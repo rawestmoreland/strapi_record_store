@@ -1,0 +1,13 @@
+version: '3'
+services:
+    sbb_postgres:
+        container_name: vinyl_postgres
+        image: postgres
+        environment:
+            POSTGRES_DB: strapi
+            POSTGRES_USER: strapi
+            POSTGRES_PASSWORD: strapi
+        ports:
+            - '5434:5432'
+        volumes:
+            - ./backend/db:/var/lib/postgresql/data
