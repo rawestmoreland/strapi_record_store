@@ -6,11 +6,9 @@ const { format } = require("path");
 
 module.exports = {
   /**
-   * Simple example.
-   * Every monday at 1am.
+   * Every day at 3:30 AM
    */
-
-  "*/3 * * *": async ({ strapi }) => {
+  "*/30 * * * *": async ({ strapi }) => {
     console.log("getting inventory");
     const inventoryUrl =
       "https://www.millionsofcds.com/excel/All-Inventory.xls";
@@ -47,7 +45,6 @@ module.exports = {
         );
 
         temp.forEach((res) => {
-          console.log(res.ItemID);
           data.push(res);
         });
       }
@@ -104,15 +101,17 @@ module.exports = {
      *
      * Update items that are in both new and old data
      *
-     * @param {*} oldIds - List of ids in the database
-     * @param {*} newIds - List of ids from the new spreadsheet
+     * @param {*} oldData - Data from Strapi
+     * @param {*} newIds - Data from the new spreadsheet
      *
-     * @return - an object of new ids to be used for the create
+     * @return - a list of new ids to be used for the create
      */
     async function updateStaleProducts(oldData, newData, formats, genres) {
+      console.log("UPDATING STALE PRODUCTS");
       let removeIds = [];
       let newDataIds = await getItemIdsFromData(newData);
       let uniqueNewData = newData;
+      let updateCount = 0;
       for (let item of oldData) {
         let { item_id } = item;
         item_id = Number.parseInt(item_id);
@@ -136,6 +135,7 @@ module.exports = {
           const formatIndex = formats.findIndex((object) => {
             return updateData.Format === object.format;
           });
+          console.log("UPDATING ITEM: ", item_id);
           await strapi.db.query("api::product.product").update({
             where: {
               item_id,
@@ -155,6 +155,7 @@ module.exports = {
               image_b_path: updateData.ImageBPath,
             },
           });
+          updateCount++;
           const indexOfObject = uniqueNewData.findIndex((object) => {
             return object.ItemID === item_id;
           });
@@ -163,6 +164,7 @@ module.exports = {
           removeIds.push(item.id);
         }
       }
+      console.log("Remove Product Count: ", removeIds.length);
       if (removeIds.length) {
         removeIds.forEach(async (id) => {
           await strapi.db.query("api::product.product").delete({
@@ -172,6 +174,7 @@ module.exports = {
           });
         });
       }
+      console.log("Updated product count: ", updateCount);
       return uniqueNewData;
     }
 
@@ -238,6 +241,7 @@ module.exports = {
         console.log("NEW DATA COUNT: ", newData.length);
         // Get the ids we have in the DB
         const oldData = await getStrapiData("product");
+        console.log("OLD DATA COUNT (IN STRAPI): ", oldData.length);
         // genres from the DB
         let genres = await getStrapiData("genre");
         let formats = await getStrapiData("format");
@@ -276,6 +280,8 @@ module.exports = {
           formats,
           genres
         );
+
+        console.log("New entries to add: ", uniqueNewData.length);
 
         uniqueNewData.length &&
           uniqueNewData.forEach(async (item) => {
