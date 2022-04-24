@@ -8,7 +8,7 @@ module.exports = {
   /**
    * Every day at 3:30 AM
    */
-  "*/30 * * * *": async ({ strapi }) => {
+  "30 21 * * *": async ({ strapi }) => {
     console.log("getting inventory");
     const inventoryUrl =
       "https://www.millionsofcds.com/excel/All-Inventory.xls";
