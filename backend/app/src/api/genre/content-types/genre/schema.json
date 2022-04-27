@@ -20,6 +20,10 @@
     },
     "genre": {
       "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "genre"
     }
   }
 }

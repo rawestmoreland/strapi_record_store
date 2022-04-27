@@ -20,6 +20,10 @@
     },
     "format": {
       "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "format"
     }
   }
 }

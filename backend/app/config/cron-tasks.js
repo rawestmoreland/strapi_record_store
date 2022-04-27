@@ -8,7 +8,7 @@ module.exports = {
   /**
    * Every day at 3:30 AM
    */
-  "30 08 * * *": async ({ strapi }) => {
+  "0/10 * * * *": async ({ strapi }) => {
     console.log("getting inventory");
     const inventoryUrl =
       "https://www.millionsofcds.com/excel/All-Inventory.xls";
@@ -184,7 +184,13 @@ module.exports = {
       let uniqueNewGenres = [
         ...new Set([...oldGenreNames, ...newGenreNames]),
       ].filter((i) => !oldGenreNames.includes(i));
-      return uniqueNewGenres;
+      for (let genre of uniqueNewGenres) {
+        await strapi.db.query("api::genre.genre").create({
+          data: {
+            genre,
+          },
+        });
+      }
     }
 
     async function getUniqueFormats(oldFormats, newData) {
@@ -193,7 +199,13 @@ module.exports = {
       let uniqueNewFormats = [
         ...new Set([...oldFormatNames, ...newFormatNames]),
       ].filter((i) => !oldFormatNames.includes(i));
-      return uniqueNewFormats;
+      for (let format of uniqueNewFormats) {
+        await strapi.db.query("api::format.format").create({
+          data: {
+            format,
+          },
+        });
+      }
     }
 
     /**
@@ -245,24 +257,9 @@ module.exports = {
         // genres from the DB
         let genres = await getStrapiData("genre");
         let formats = await getStrapiData("format");
-        const uniqueNewGenres = await getUniqueGenres(genres, newData);
-        uniqueNewGenres.length &&
-          uniqueNewGenres.forEach(async (genre) => {
-            await strapi.db.query("api::genre.genre").create({
-              data: {
-                genre,
-              },
-            });
-          });
-        const uniqueNewFormats = await getUniqueFormats(formats, newData);
-        uniqueNewFormats.length &&
-          uniqueNewFormats.forEach(async (format) => {
-            await strapi.db.query("api::format.format").create({
-              data: {
-                format,
-              },
-            });
-          });
+
+        await getUniqueGenres(genres, newData);
+        await getUniqueFormats(formats, newData);
 
         /**
          * Re-fetch the updated formats and genres
@@ -283,8 +280,8 @@ module.exports = {
 
         console.log("New entries to add: ", uniqueNewData.length);
 
-        uniqueNewData.length &&
-          uniqueNewData.forEach(async (item) => {
+        if (uniqueNewData.length) {
+          for (let item of uniqueNewData) {
             let genreList = [];
             item.Genre &&
               item.Genre.split("/").forEach((genre) => {
@@ -297,28 +294,26 @@ module.exports = {
               return item.Format === object.format;
             });
             const upCharge = item.Price * 0.5;
-            await strapi.db
-              .query("api::product.product")
-              .create({
-                data: {
-                  supplier: 1,
-                  link: item.Link,
-                  item_id: item.ItemID,
-                  format: formats[formatIndex].id,
-                  price: item.Price,
-                  sell_price: item.Price + upCharge,
-                  description: item.Description,
-                  year: item.Year,
-                  label: item.Label,
-                  upc: item.UPC,
-                  catalog: item.Catalog,
-                  genres: genreList,
-                  image_a_path: item.ImageAPath,
-                  image_b_path: item.ImageBPath,
-                },
-              })
-              .then(() => console.log("finished"));
-          });
+            await strapi.db.query("api::product.product").create({
+              data: {
+                supplier: 1,
+                link: item.Link,
+                item_id: item.ItemID,
+                format: formats[formatIndex].id,
+                price: item.Price,
+                sell_price: item.Price + upCharge,
+                description: item.Description,
+                year: item.Year,
+                label: item.Label,
+                upc: item.UPC,
+                catalog: item.Catalog,
+                genres: genreList,
+                image_a_path: item.ImageAPath,
+                image_b_path: item.ImageBPath,
+              },
+            });
+          }
+        }
       });
   },
 };
