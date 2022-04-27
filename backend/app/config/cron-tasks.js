@@ -9,6 +9,10 @@ module.exports = {
    * Every day at 3:30 AM
    */
   "0/10 * * * *": async ({ strapi }) => {
+    let NEW_INVENTORY_COUNT = 0;
+    let OLD_INVENTORY_COUNT = 0;
+    let REMOVE_COUNT = 0;
+    let ADD_COUNT = 0;
     console.log("getting inventory");
     const inventoryUrl =
       "https://www.millionsofcds.com/excel/All-Inventory.xls";
@@ -166,6 +170,7 @@ module.exports = {
       }
       console.log("Remove Product Count: ", removeIds.length);
       if (removeIds.length) {
+        REMOVE_COUNT = removeIds.length;
         removeIds.forEach(async (id) => {
           await strapi.db.query("api::product.product").delete({
             where: {
@@ -251,8 +256,10 @@ module.exports = {
       .then(() => parse("/public/static/inventory.xls"))
       .then(async (newData) => {
         console.log("NEW DATA COUNT: ", newData.length);
+        NEW_INVENTORY_COUNT = newData.length;
         // Get the ids we have in the DB
         const oldData = await getStrapiData("product");
+        OLD_INVENTORY_COUNT = oldData.length;
         console.log("OLD DATA COUNT (IN STRAPI): ", oldData.length);
         // genres from the DB
         let genres = await getStrapiData("genre");
@@ -314,6 +321,16 @@ module.exports = {
             });
           }
         }
+      })
+      .then(async () => {
+        await strapi.db.query("api::update_log.update_log").create({
+          data: {
+            old_inventory_count: OLD_INVENTORY_COUNT,
+            new_inventory_count: NEW_INVENTORY_COUNT,
+            remove_inventory_count: REMOVE_COUNT,
+            updated_timestamp: new Date(),
+          },
+        });
       });
   },
 };

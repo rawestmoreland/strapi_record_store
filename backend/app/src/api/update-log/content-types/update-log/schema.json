@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "update_logs",
+  "info": {
+    "singularName": "update-log",
+    "pluralName": "update-logs",
+    "displayName": "Update Log"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "old_inventory_count": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "new_inventory_count": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "remove_inventory_count": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "updated_timestamp": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}
