@@ -72,19 +72,49 @@ export async function getProduct(item_id: number) {
 	return product?.data?.[0]
 }
 
-export async function searchProducts(value: string) {
+export async function searchProducts(
+	value: string,
+	page: number | null,
+	pageSize: number = 9
+) {
 	console.log(value)
-	const query = qs.stringify(
-		{
-			filters: {
-				description: {
-					$containsi: value,
+	let query
+
+	if (page) {
+		query = qs.stringify(
+			{
+				pagination: {
+					page,
+					pageSize,
+				},
+				filters: {
+					$or: [
+						{
+							description: {
+								$containsi: value,
+							},
+						},
+					],
 				},
 			},
-		},
-		{ encodeValuesOnly: true }
-	)
+			{ encodeValuesOnly: true }
+		)
+	} else {
+		query = qs.stringify(
+			{
+				filters: {
+					$or: [
+						{
+							description: {
+								$containsi: value,
+							},
+						},
+					],
+				},
+			},
+			{ encodeValuesOnly: true }
+		)
+	}
 	const products = await fetchAPI(`/api/products?${query}`)
-	console.log(products)
 	return products
 }

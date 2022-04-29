@@ -45,7 +45,17 @@ const Home: NextPage = ({ products, page }: any) => {
 				<span>{`Page ${page} of ${meta.pagination.pageCount}`}</span>
 				<button
 					className='border border-black rounded p-2 w-28'
-					onClick={() => router.push(`/?page=${page + 1}`)}
+					onClick={() =>
+						router.push(
+							`/?page=${page + 1}${
+								router.query.search ? '&search=true' : ''
+							}${
+								router.query.searchQuery
+									? '&searchQuery=' + router.query.searchQuery
+									: ''
+							}`
+						)
+					}
 					disabled={page === meta.pagination.pageCount}
 				>
 					Next
@@ -60,7 +70,7 @@ export async function getServerSideProps({
 }) {
 	let products: any = []
 	if (search && searchQuery) {
-		products = await searchProducts(searchQuery)
+		products = await searchProducts(searchQuery, (page = +page), 9)
 	} else {
 		products = await getProducts((page = +page), 9)
 	}
