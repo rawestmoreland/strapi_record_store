@@ -323,7 +323,7 @@ module.exports = {
         }
       })
       .then(async () => {
-        await strapi.db.query("api::update_log.update_log").create({
+        await strapi.db.query("api::update-log.update-log").create({
           data: {
             old_inventory_count: OLD_INVENTORY_COUNT,
             new_inventory_count: NEW_INVENTORY_COUNT,
