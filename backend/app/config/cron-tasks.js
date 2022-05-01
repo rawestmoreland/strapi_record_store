@@ -8,7 +8,7 @@ module.exports = {
   /**
    * Every day at 3:30 AM
    */
-  "*/30 * * * *": async ({ strapi }) => {
+  "*/120 * * * *": async ({ strapi }) => {
     let NEW_INVENTORY_COUNT = 0;
     let OLD_INVENTORY_COUNT = 0;
     let REMOVE_COUNT = 0;
