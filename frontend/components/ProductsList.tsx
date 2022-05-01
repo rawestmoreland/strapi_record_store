@@ -13,6 +13,7 @@ const ProductsList = ({ products }: any) => {
 				)
 				.map((_product: any) => {
 					const { attributes } = _product
+					const { format } = attributes.format.data.attributes
 					return (
 						<div
 							key={_product.id}
@@ -33,6 +34,7 @@ const ProductsList = ({ products }: any) => {
 										<h4 className='mt-1 font-semibold text-base leading-tight text-gray-700'>
 											{attributes.description}
 										</h4>
+										<p>{format || ''}</p>
 									</div>
 								</a>
 							</Link>

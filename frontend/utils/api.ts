@@ -41,6 +41,8 @@ export async function getProducts(
 							page,
 							pageSize,
 						},
+						sort: ['description'],
+						populate: '*',
 					},
 					{
 						encodeValuesOnly: true,

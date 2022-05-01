@@ -8,7 +8,7 @@ module.exports = {
   /**
    * Every day at 3:30 AM
    */
-  "30 8 * * *": async ({ strapi }) => {
+  "*/30 * * * *": async ({ strapi }) => {
     let NEW_INVENTORY_COUNT = 0;
     let OLD_INVENTORY_COUNT = 0;
     let REMOVE_COUNT = 0;
@@ -323,7 +323,7 @@ module.exports = {
         }
       })
       .then(async () => {
-        await strapi.db.query("api::update_logs.update_logs").create({
+        await strapi.db.query("api::update_log.update_log").create({
           data: {
             old_inventory_count: OLD_INVENTORY_COUNT,
             new_inventory_count: NEW_INVENTORY_COUNT,
