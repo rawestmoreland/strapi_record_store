@@ -73,11 +73,10 @@ export async function getProduct(item_id: number) {
 }
 
 export async function searchProducts(
-	value: string,
+	value: string | string[],
 	page: number | null,
 	pageSize: number = 9
 ) {
-	console.log(value)
 	let query
 
 	if (page) {
@@ -94,6 +93,11 @@ export async function searchProducts(
 								$containsi: value,
 							},
 						},
+						{
+							format: {
+								$contains: value,
+							},
+						},
 					],
 				},
 			},
@@ -107,6 +111,11 @@ export async function searchProducts(
 						{
 							description: {
 								$containsi: value,
+							},
+						},
+						{
+							format: {
+								$contains: value,
 							},
 						},
 					],

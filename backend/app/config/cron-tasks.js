@@ -15,7 +15,7 @@ module.exports = {
     let ADD_COUNT = 0;
     console.log("getting inventory");
     const inventoryUrl =
-      "https://www.millionsofcds.com/excel/All-Inventory.xls";
+      "https://www.millionsofcds.com/excel/All-Inventory.xlsx";
 
     async function download(url, path) {
       console.log("Downloading new inventory...");
@@ -252,8 +252,8 @@ module.exports = {
       return formatList;
     }
 
-    download(inventoryUrl, `${process.cwd()}/public/static/inventory.xls`)
-      .then(() => parse("/public/static/inventory.xls"))
+    download(inventoryUrl, `${process.cwd()}/public/static/inventory.xlsx`)
+      .then(() => parse("/public/static/inventory.xlsx"))
       .then(async (newData) => {
         console.log("NEW DATA COUNT: ", newData.length);
         NEW_INVENTORY_COUNT = newData.length;

@@ -50,11 +50,12 @@ const ProductPage = ({ product }) => {
 								{attributes.description || ''}
 							</h4>
 						</div>
-						<div>
-							<h4 className='mt-1 font-semibold text-lg leading-tight text-gray-700'>
-								{format} - ${attributes.sell_price}
-							</h4>
-						</div>
+						<p className='mt-1 font-semibold text-lg leading-tight text-gray-700'>
+							{attributes.year || ''}
+						</p>
+						<p className='mt-1 font-semibold text-lg leading-tight text-gray-700'>
+							{format} - ${attributes.sell_price}
+						</p>
 
 						<button
 							className='snipcart-add-item mt-4 bg-white border border-gray-200 d hover:shadow-lg text-gray-700 font-semibold py-2 px-4 rounded shadow'
