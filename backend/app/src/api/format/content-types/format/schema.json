@@ -18,12 +18,13 @@
       "target": "api::product.product",
       "mappedBy": "format"
     },
-    "format": {
-      "type": "string"
+    "name": {
+      "type": "string",
+      "unique": true
     },
     "slug": {
       "type": "uid",
-      "targetField": "format"
+      "targetField": "name"
     }
   }
 }

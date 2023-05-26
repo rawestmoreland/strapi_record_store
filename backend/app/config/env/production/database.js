@@ -1,8 +1,6 @@
 const parse = require("pg-connection-string").parse;
 const config = parse(
-  process.env.DATABASE_URL ||
-    process.env.HEROKU_POSTGRESQL_GOLD_URL ||
-    process.env.HEROKU_POSTGRESQL_COBALT_URL
+  process.env.DATABASE_URL
 );
 module.exports = ({ env }) => ({
   connection: {
