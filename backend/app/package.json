@@ -17,8 +17,8 @@
     "@strapi/strapi": "^4.10.6",
     "axios": "^1.4.0",
     "node-fetch": "^2.6.7",
-    "pg": "^8.7.3",
-    "pg-connection-string": "^2.5.0",
+    "pg": "^8.11.0",
+    "pg-connection-string": "^2.6.0",
     "slugify": "^1.6.6",
     "xlsx": "^0.18.5"
   },
