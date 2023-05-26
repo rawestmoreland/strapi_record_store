@@ -31,7 +31,6 @@ async function insertGenres(strapi, albums) {
         const newGenre = await strapi.entityService.create("api::genre.genre", {
           data: unique,
         });
-        genres.push(newGenre);
       } else continue;
     } catch (error) {
       console.error("Error inserting genres:", error);
