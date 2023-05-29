@@ -38,12 +38,18 @@ export async function getServerSideProps(context) {
 export default function Page({ genres, pagination }) {
   const timeoutId = useRef(null);
 
+  console.log(pagination);
+
   const router = useRouter();
 
   const handlePageClick = data => {
     let selected = data.selected + 1; // react-paginate uses zero-based index, increment by 1 for our API
     router.push(`/genres?page=${selected}`);
   };
+
+  if (!genres || !pagination) {
+    return <div />;
+  }
 
   return (
     <Layout navigation={navigation} footerNavigation={footerNavigation}>
@@ -71,8 +77,8 @@ export default function Page({ genres, pagination }) {
         previousLabel={'Prev'}
         nextLabel={'Next'}
         breakLabel={'...'}
-        initialPage={pagination?.page - 1}
-        pageCount={pagination?.pageCount}
+        initialPage={pagination.page - 1}
+        pageCount={pagination.pageCount}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageClick}

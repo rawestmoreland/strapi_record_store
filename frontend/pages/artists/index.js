@@ -20,14 +20,9 @@ export async function getServerSideProps(context) {
   });
 
   try {
-    const artists = await axios.get(
-      `${process.env.STRAPI_API_URL}/artists${
-        queryString ? `?${queryString}` : ''
-      }`,
-      {
-        headers: { Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}` },
-      }
-    );
+    const artists = await axios.get(`${process.env.STRAPI_API_URL}/artists${queryString ? `?${queryString}` : ''}`, {
+      headers: { Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}` },
+    });
     return {
       props: {
         artists: artists.data.data,
@@ -45,14 +40,18 @@ export default function Page({ artists, pagination }) {
 
   const router = useRouter();
 
-  const handlePageClick = (data) => {
+  const handlePageClick = data => {
     let selected = data.selected + 1; // react-paginate uses zero-based index, increment by 1 for our API
     router.push(`/artists?page=${selected}`);
   };
 
+  if (!artists && !pagination) {
+    return <div />;
+  }
+
   return (
     <Layout navigation={navigation} footerNavigation={footerNavigation}>
-      <div className="relative mx-auto max-w-7xl px-4 py-12 sm:static sm:px-6 lg:px-8 flex flex-col gap-5 text-gray-700">
+      <div className="relative mx-auto flex max-w-7xl flex-col gap-5 px-4 py-12 text-gray-700 sm:static sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold">Artists</h1>
 
         {/* <input
@@ -63,11 +62,9 @@ export default function Page({ artists, pagination }) {
         /> */}
 
         <div className="grid grid-cols-5 items-center gap-4">
-          {artists?.map((artist) => (
+          {artists?.map(artist => (
             <div key={artist.attributes.id} className="text-gray-700">
-              <Link href={`/artist/${artist.attributes.slug}`}>
-                {artist.attributes.name}
-              </Link>
+              <Link href={`/artist/${artist.attributes.slug}`}>{artist.attributes.name}</Link>
             </div>
           ))}
         </div>
