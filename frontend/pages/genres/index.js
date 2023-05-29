@@ -20,20 +20,13 @@ export async function getServerSideProps(context) {
   });
 
   try {
-    const genres = await axios.get(
-      `${process.env.STRAPI_API_URL}/genres${
-        queryString ? `?${queryString}` : ''
-      }`,
-      {
-        headers: { Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}` },
-      }
-    );
+    const genres = await axios.get(`${process.env.STRAPI_API_URL}/genres${queryString ? `?${queryString}` : ''}`, {
+      headers: { Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}` },
+    });
     return {
       props: {
         genres: genres.data.data,
         pagination: genres.data.meta.pagination,
-        initialTotal: genres.data.meta,
-        initialPage: page,
       },
     };
   } catch (error) {
@@ -47,14 +40,14 @@ export default function Page({ genres, pagination }) {
 
   const router = useRouter();
 
-  const handlePageClick = (data) => {
+  const handlePageClick = data => {
     let selected = data.selected + 1; // react-paginate uses zero-based index, increment by 1 for our API
     router.push(`/genres?page=${selected}`);
   };
 
   return (
     <Layout navigation={navigation} footerNavigation={footerNavigation}>
-      <div className="relative mx-auto max-w-7xl px-4 py-12 sm:static sm:px-6 lg:px-8 flex flex-col gap-5 text-gray-700">
+      <div className="relative mx-auto flex max-w-7xl flex-col gap-5 px-4 py-12 text-gray-700 sm:static sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold">Genres</h1>
 
         {/* <input
@@ -65,11 +58,9 @@ export default function Page({ genres, pagination }) {
         /> */}
 
         <div className="grid grid-cols-5 items-center gap-4">
-          {genres?.map((genre) => (
+          {genres?.map(genre => (
             <div key={genre.attributes.id} className="text-gray-700">
-              <Link href={`/genre/${genre.attributes.slug}`}>
-                {genre.attributes.name}
-              </Link>
+              <Link href={`/genre/${genre.attributes.slug}`}>{genre.attributes.name}</Link>
             </div>
           ))}
         </div>
@@ -80,8 +71,8 @@ export default function Page({ genres, pagination }) {
         previousLabel={'Prev'}
         nextLabel={'Next'}
         breakLabel={'...'}
-        initialPage={pagination.page - 1}
-        pageCount={pagination.pageCount}
+        initialPage={pagination?.page - 1}
+        pageCount={pagination?.pageCount}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageClick}
