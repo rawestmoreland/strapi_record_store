@@ -1,12 +1,8 @@
 function getArtistsFromDescription(str) {
   // Split the string at the hyphen to separate the artists from the description
-  const [artistsStr] = str.split('-').map((part) => part.trim());
+  const artistsStr = str.split('-').map((part) => part.trim());
 
-  // Split the artists string at commas to create a list of artists
-  const artistsList = artistsStr.split(',').map((part) => part.trim());
-
-  // Remove "Etc." from the list of artists
-  return artistsList.filter((artist) => artist !== 'Etc.');
+  return artistsStr;
 }
 
 async function insertGenres(strapi, albums) {

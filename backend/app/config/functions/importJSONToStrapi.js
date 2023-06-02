@@ -94,7 +94,6 @@ async function importJSONToStrapi(strapi, jsonData) {
       .map((g) => g.trim())
       .map((genre) => genresMap.get(genre.toLowerCase()));
     const artistsArray = descriptionArtist[0]
-      .split(",")
       .map((a) => a.trim())
       .map((artist) => artistsMap.get(artist.toLowerCase()));
     const labelsArray = label
