@@ -1,8 +1,8 @@
 function getArtistsFromDescription(str) {
   // Split the string at the hyphen to separate the artists from the description
-  const artistsStr = str.split('-').map((part) => part.trim());
+  const artistPart = str.split('-').map((part) => part.trim());
 
-  return artistsStr;
+  return artistPart[0];
 }
 
 async function insertGenres(strapi, albums) {
@@ -120,14 +120,13 @@ async function insertArtists(strapi, albums) {
   let uniqueArtistsSet = new Set();
 
   albums.forEach((album) => {
-    const artists = getArtistsFromDescription(album.Description);
-    artists.forEach((artist) => uniqueArtistsSet.add(artist));
+    const artist = getArtistsFromDescription(album.Description);
+    uniqueArtistsSet.add(artist);
   });
 
   const uniqueArtistsArray = Array.from(uniqueArtistsSet);
 
   const uniqueNameObjects = uniqueArtistsArray
-    .filter((item) => item !== "Etc.")
     .map((str) => ({
       name: str,
     }));

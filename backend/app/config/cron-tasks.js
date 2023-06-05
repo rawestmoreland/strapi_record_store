@@ -1,8 +1,5 @@
-const fs = require("fs");
 const path = require("path");
-const { downloadExcelFile } = require("./functions/downloadExcelFile");
-const { convertExcelToJSON } = require("./functions/convertExcelToJSON");
-const { importJSONToStrapi } = require("./functions/importJSONToStrapi");
+const { inventoryImporter } = require("./functions/inventoryImporter");
 
 module.exports = {
   /**
@@ -19,31 +16,7 @@ module.exports = {
     const excelFilePath = `${process.cwd()}/public/static/inventory.xlsx`;
     const outputJsonFilePath = `${process.cwd()}/public/static/inventory.json`
 
-    async function main() {
-      await downloadExcelFile({
-        url: inventoryUrl,
-        filePath: excelFilePath,
-      });
-      console.log(
-        `Excel data has been dowloaded and saved to ${excelFilePath}`
-      );
-
-      const jsonData = convertExcelToJSON(excelFilePath);
-      await fs.promises.writeFile(
-        outputJsonFilePath,
-        JSON.stringify(jsonData, null, 2)
-      );
-      console.log(
-        "Excel data has been converted to JSON and saved to",
-        outputJsonFilePath
-      );
-
-      await importJSONToStrapi(strapi, jsonData);
-
-      console.log('All done 😃');
-    }
-
-    main();
+    await inventoryImporter(inventoryUrl, excelFilePath, outputJsonFilePath);
 
     //   async function download(url, path) {
     //     console.log("Downloading new inventory...");

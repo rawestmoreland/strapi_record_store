@@ -45,9 +45,6 @@
       "target": "api::format.format",
       "inversedBy": "products"
     },
-    "label": {
-      "type": "string"
-    },
     "sell_price": {
       "type": "decimal"
     },
@@ -65,11 +62,11 @@
     "upc": {
       "type": "string"
     },
-    "artists": {
+    "artist": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "manyToOne",
       "target": "api::artist.artist",
-      "mappedBy": "products"
+      "inversedBy": "products"
     },
     "labels": {
       "type": "relation",
