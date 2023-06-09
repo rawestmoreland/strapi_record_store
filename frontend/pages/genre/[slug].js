@@ -35,8 +35,7 @@ export async function getServerSideProps({ params, query }) {
     pagination: { page, pageSize: 50 },
   });
   const albumsResponse = await axios.get(
-    `${process.env.STRAPI_API_URL}/products${
-      albumQuery ? `?${albumQuery}` : ''
+    `${process.env.STRAPI_API_URL}/products${albumQuery ? `?${albumQuery}` : ''
     }`,
     {
       headers: {
@@ -145,9 +144,7 @@ export default function Page({
                     </div>
                     <div className="flex flex-col gap-2">
                       <h3 className="mt-4 text-sm text-gray-700 font-semibold">
-                        {attributes.artists.data
-                          .map((artist) => artist.attributes.name)
-                          .join(', ')}{' '}
+                        {attributes.artist.data.attributes.name}{' '}
                         ({attributes.format.data.attributes.name})
                       </h3>
                       <h3 className="text-sm text-gray-700">

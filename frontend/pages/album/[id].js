@@ -42,7 +42,7 @@ export async function getServerSideProps({ params }) {
 export default function Page({ album }) {
   const {
     description,
-    artists,
+    artist,
     sell_price: sellPrice,
     image_a_path: imageAPath,
     format,
@@ -85,7 +85,7 @@ export default function Page({ album }) {
 
             <div className="mt-4">
               <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                {`${artists.data.map(artist => artist.attributes.name).join(', ')} (${format.data.attributes.name})`}
+                {`${artist.data.attributes.name} (${format.data.attributes.name})`}
               </h1>
             </div>
 
@@ -226,7 +226,7 @@ export default function Page({ album }) {
                   data-item-description={description}
                   data-item-image={imageAPath}
                   data-item-url={`/album/${album.id}`}
-                  data-item-name={`${artists.data.map(artist => artist.attributes.name).join(', ')} - ${description}`}
+                  data-item-name={`${artist.data.attributes.name} - ${description}`}
                   className="snipcart-add-item flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                 >
                   Add to cart
