@@ -4,22 +4,16 @@ import { Bars3Icon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 
 import { useSnipcart } from '@/hooks/useSnipcart';
 import classNames from '@/functions/classNames';
+import { useState } from 'react';
 
-export default function DesktopHeader({ navigation }) {
+export default function DesktopHeader({ navigation, toggleNav }) {
   const { cart = {} } = useSnipcart();
   return (
     <header className="sticky top-0 z-20">
-      <nav
-        aria-label="Top"
-        className="bg-white bg-opacity-90 backdrop-blur-xl backdrop-filter"
-      >
+      <nav aria-label="Top" className="bg-white bg-opacity-90 backdrop-blur-xl backdrop-filter">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center">
-            <button
-              type="button"
-              className="rounded-md bg-white p-2 text-gray-400 lg:hidden"
-              onClick={() => setOpen(true)}
-            >
+            <button type="button" className="rounded-md bg-white p-2 text-gray-400 lg:hidden" onClick={toggleNav}>
               <span className="sr-only">Open menu</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
@@ -39,7 +33,7 @@ export default function DesktopHeader({ navigation }) {
             {/* Flyout menus */}
             <div className="hidden lg:ml-8 lg:block lg:self-stretch">
               <div className="flex h-full space-x-8">
-                {navigation.categories.map((category) => (
+                {navigation.categories.map(category => (
                   <div key={category.name} className="flex">
                     <>
                       <div className="relative flex">
@@ -47,7 +41,7 @@ export default function DesktopHeader({ navigation }) {
                           href={`/${category.path}`}
                           className={classNames(
                             'border-transparent text-gray-700 hover:text-gray-800',
-                            'relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out'
+                            'relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out',
                           )}
                         >
                           {category.name}
@@ -57,7 +51,7 @@ export default function DesktopHeader({ navigation }) {
                   </div>
                 ))}
 
-                {navigation.pages.map((page) => (
+                {navigation.pages.map(page => (
                   <a
                     key={page.name}
                     href={page.href}
@@ -96,7 +90,7 @@ export default function DesktopHeader({ navigation }) {
 
               {/* Cart */}
               <div className="ml-4 flow-root lg:ml-6">
-                <button className="group -m-2 flex items-center p-2 snipcart-checkout snipcart-summary">
+                <button className="snipcart-checkout snipcart-summary group -m-2 flex items-center p-2">
                   <ShoppingBagIcon
                     className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                     aria-hidden="true"

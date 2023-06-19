@@ -1,3 +1,5 @@
+import {useState} from 'react';
+
 import DesktopHeader from './DesktopHeader';
 import MobileMenu from './MobileMenu';
 import Footer from './Footer';
@@ -10,11 +12,15 @@ export default function Layout({
   genres,
   artists,
 }) {
+  const [sideNavOpen, setSideNavOpen] = useState(false);
+
+  const toggleNav = () => setSideNavOpen(!sideNavOpen);
+
   return (
     <>
       <div className="relative bg-white">
-        <MobileMenu navigation={navigation} />
-        <DesktopHeader navigation={navigation} />
+        <MobileMenu navigation={navigation} open={sideNavOpen} onRequestClose={() => setSideNavOpen(false)} />
+        <DesktopHeader navigation={navigation} toggleNav={toggleNav} />
         {children}
         <Footer footerNavigation={footerNavigation} />
       </div>

@@ -45,11 +45,10 @@ export default function Page({ album }) {
     artist,
     sell_price: sellPrice,
     image_a_path: imageAPath,
+    image_b_path: imageBPath,
     format,
     item_id: itemId,
   } = album.attributes;
-
-  console.log(album.attributes);
   return (
     <Layout navigation={navigation} footerNavigation={footerNavigation}>
       <div className="bg-white">
@@ -144,13 +143,20 @@ export default function Page({ album }) {
 
           {/* Product image */}
           <div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-            <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg">
+            <div className="aspect-h-1 aspect-w-1 relative overflow-hidden rounded-lg">
               <Image
                 priority
                 src={imageAPath}
                 alt={`${description}`}
                 fill
-                className="h-full w-full object-cover object-center"
+                className="h-full w-full transform object-cover object-center transition-transform duration-300 hover:scale-110"
+              />
+              <Image
+                priority
+                src={imageBPath}
+                alt={`${description}`}
+                fill
+                className="absolute left-0 top-0 h-full w-full transform object-cover object-center opacity-0 transition-opacity duration-300 hover:opacity-100"
               />
             </div>
           </div>

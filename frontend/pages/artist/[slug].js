@@ -132,7 +132,7 @@ export default function Page({ initialAlbums, artist, initialPagination, initial
                   const { attributes } = album;
                   return (
                     <Link key={`${album.id}-${attributes.year}`} href={`/album/${album.id}`} className="group">
-                      <div className="w-full overflow-hidden rounded-lg bg-gray-200">
+                      <div className="relative w-full overflow-hidden rounded-lg bg-gray-200">
                         <Image
                           width={305}
                           height={305}
@@ -140,7 +140,16 @@ export default function Page({ initialAlbums, artist, initialPagination, initial
                           src={attributes.image_a_path}
                           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
                           alt={`${attributes.description}`}
-                          className="h-full w-full object-cover object-center group-hover:opacity-75"
+                          className="h-full w-full transform object-cover object-center transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <Image
+                          width={305}
+                          height={305}
+                          placeholder="blur"
+                          src={attributes.image_b_path}
+                          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+                          alt={`${attributes.description}`}
+                          className="absolute left-0 top-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                         />
                       </div>
                       <div className="flex flex-col gap-2">
