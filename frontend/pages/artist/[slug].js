@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { footerNavigation, navigation } from '@/constants/navigation';
 
@@ -42,8 +43,6 @@ export async function getServerSideProps({ params, query }) {
       },
     },
   );
-
-  console.log(artistResponse);
 
   const { pagination } = albumsResponse.data.meta;
 
